@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Assisted Development in the SD Program</title>
+  <style>
+    :root, [data-theme="light"] {
+      --bg: #fffff8;
+      --fg: #111;
+      --fg-muted: #555;
+      --border: #ccc;
+      --accent-red: #dc2217;
+      --accent-blue: #0897e2;
+      --code-bg: #f4f4f0;
+      --link: #0897e2;
+      --toggle-bg: #ddd;
+      --toggle-knob: #fff;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1a1a;
+      --fg: #d8d8d8;
+      --fg-muted: #999;
+      --border: #444;
+      --code-bg: #252525;
+      --link: #5bb8f0;
+      --toggle-bg: #555;
+      --toggle-knob: #ddd;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      font-size: 18px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Iosevka", "Fira Code", "JetBrains Mono", "Cascadia Code",
+                   "SF Mono", "Consolas", "Liberation Mono", monospace;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    header .subtitle {
+      color: var(--fg-muted);
+      font-size: 0.85rem;
+    }
+
+    nav {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+    }
+
+    nav a { margin-right: 1.2rem; }
+
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 2.2rem;
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-top: 1.3rem;
+      margin-bottom: 0.4rem;
+    }
+
+    p { margin-bottom: 0.9rem; }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    ul, ol {
+      margin-bottom: 0.9rem;
+      padding-left: 1.5rem;
+    }
+
+    li { margin-bottom: 0.3rem; }
+
+    .callout {
+      border-left: 3px solid var(--accent-red);
+      padding: 0.7rem 1rem;
+      background: var(--code-bg);
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+    }
+
+    .callout.blue { border-left-color: var(--accent-blue); }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      margin-right: 0.3rem;
+      font-weight: 700;
+    }
+
+    .tag-red { color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .tag-blue { color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      font-weight: 700;
+      background: var(--code-bg);
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin: 0.8rem 0 1.2rem;
+    }
+
+    .tool-card {
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .tool-card strong {
+      display: block;
+      margin-bottom: 0.15rem;
+      font-size: 0.85rem;
+    }
+
+    .tool-card .desc {
+      color: var(--fg-muted);
+      font-size: 0.75rem;
+    }
+
+    .ref {
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      margin-top: 0.3rem;
+    }
+
+    .ref a { font-size: 0.75rem; }
+
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 2px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* toggle */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-track {
+      width: 2.2rem;
+      height: 1.2rem;
+      background: var(--toggle-bg);
+      border-radius: 0.6rem;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .toggle-knob {
+      width: 0.9rem;
+      height: 0.9rem;
+      background: var(--toggle-knob);
+      border-radius: 50%;
+      position: absolute;
+      top: 0.15rem;
+      left: 0.15rem;
+      transition: transform 0.2s;
+    }
+
+    [data-theme="dark"] .toggle-knob {
+      transform: translateX(1rem);
+    }
+
+    @media (max-width: 600px) {
+      html { font-size: 16px; }
+      .tools-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>AI-Assisted Development in the SD Program</h1>
+  <div class="subtitle">
+    Integrating AI coding tools into the
+    <a href="https://www.cna.nl.ca/program/software-development-co-op#">Software Development (Co-op)</a>
+    program at CNA.
+  </div>
+  <nav>
+    <a href="#thesis">Thesis</a>
+    <a href="#curriculum">Curriculum</a>
+    <a href="#tools">Tools</a>
+    <a href="#textbooks">Textbooks</a>
+    <a href="#pedagogy">Pedagogy</a>
+    <a href="#community">Community</a>
+    <a href="#next">Next Steps</a>
+  </nav>
+</header>
+
+<main>
+
+<section id="thesis">
+  <h2>Thesis</h2>
+
+  <div class="callout">
+    AI coding tools should be adopted into the SD program. First year
+    already teaches the fundamentals needed to use them. Second and
+    third year should lean into them heavily. The result is better
+    graduates and a stronger tech industry in NL.
+  </div>
+
+  <p>
+    This is already happening elsewhere. CMU launched a course where
+    students build full applications without writing code manually.
+    Anthropic partnered with CodePath to put Claude Code at the centre
+    of CS programs at 20,000+ student institutions, including HBCUs.
+    Stanford is teaching "vibe coding" as continuing education.
+  </p>
+
+  <p>
+    These aren't experiments anymore. They're curriculum.
+  </p>
+
+  <div class="ref">
+    <a href="https://s3d.cmu.edu/news/2025/1020-ai-tools-for-software.html">CMU: AI Tools for Software Development</a> &middot;
+    <a href="https://www.anthropic.com/news/anthropic-codepath-partnership">Anthropic &times; CodePath Partnership</a> &middot;
+    <a href="https://continuingstudies.stanford.edu/courses/professional-and-personal-development/vibe-coding-building-software-in-conversation-with-ai/20252_TECH-42">Stanford: Vibe Coding</a>
+  </div>
+</section>
+
+<section id="curriculum">
+  <h2>Curriculum Fit</h2>
+
+  <p>
+    Year 1 already teaches the skills that make these tools work.
+    Nothing new needs to be added&mdash;the foundations are there.
+  </p>
+
+  <h3>Year 1 &mdash; Foundations <span class="tag tag-blue">existing</span></h3>
+
+  <table>
+    <tr><th>Skill Area</th><th>AI Relevance</th></tr>
+    <tr><td>Command line</td><td>Claude Code runs in the terminal. Students who are comfortable here can pick it up immediately.</td></tr>
+    <tr><td>Data formats</td><td>JSON, CSV, structured data&mdash;students need to read and verify AI output.</td></tr>
+    <tr><td>Python</td><td>Most common language in AI ecosystems.</td></tr>
+    <tr><td>Web dev</td><td>Full-stack context for evaluating generated code.</td></tr>
+    <tr><td>JavaScript</td><td>Second core language. Broadens what students can build with AI.</td></tr>
+    <tr><td>App security</td><td>Students must catch vulnerabilities AI may introduce.</td></tr>
+    <tr><td>Systems analysis</td><td>AI works best with clear specs. Design before build.</td></tr>
+  </table>
+
+  <h3>Years 2 &amp; 3 &mdash; Integration <span class="tag tag-red">proposed</span></h3>
+
+  <p>
+    With foundations in place, upper years should use AI tools as a
+    standard part of the workflow. Not instead of manual work&mdash;alongside it.
+    Always instructor-facilitated. Manual skills still tested.
+  </p>
+</section>
+
+<section id="tools">
+  <h2>Tools</h2>
+
+  <p>
+    Several options exist. Claude Code is the recommendation
+    because it runs at the command line (reinforces Year 1 skills)
+    and supports educational licensing.
+  </p>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <strong>Claude Code <span class="tag tag-red">recommended</span></strong>
+      <div class="desc">CLI-native. Terminal-first workflow, git integration. Reinforces fundamentals.</div>
+    </div>
+    <div class="tool-card">
+      <strong>GitHub Copilot</strong>
+      <div class="desc">IDE-integrated autocomplete. Widely adopted in industry.</div>
+    </div>
+    <div class="tool-card">
+      <strong>Cursor</strong>
+      <div class="desc">AI-first editor. VS Code fork with built-in chat and editing.</div>
+    </div>
+    <div class="tool-card">
+      <strong>Windsurf</strong>
+      <div class="desc">AI IDE with agentic workflows.</div>
+    </div>
+  </div>
+
+  <p>
+    Students should be aware of alternatives. The field moves fast
+    and tool preferences change. What matters is the underlying
+    skill&mdash;working effectively with AI&mdash;not any single product.
+  </p>
+
+  <div class="ref">
+    <a href="https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/">JetBrains: State of Developer Ecosystem 2025</a> &middot;
+    <a href="https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/">GitHub: Copilot Productivity Research</a>
+  </div>
+</section>
+
+<section id="textbooks">
+  <h2>Student-Built Textbooks</h2>
+
+  <p>
+    One concrete use case: students build their own course
+    materials using AI tools. This isn't hypothetical. Google's
+    LearnLM team is already researching AI-personalized textbooks.
+    UCLA is piloting AI-generated course texts.
+  </p>
+
+  <p>
+    For our program, the approach is more hands-on. Students use
+    Claude Code (or similar) to generate, edit, and maintain
+    reference materials for their own courses. They learn the
+    tool by building something they actually need.
+  </p>
+
+  <div class="callout blue">
+    This does two things at once: it teaches the technology, and
+    it builds the habit of creating your own learning resources.
+    In this field, the documentation you need doesn't always
+    exist. The ability to build it yourself is a career-long skill.
+  </div>
+
+  <p>
+    Software development changes constantly. Frameworks, languages,
+    and best practices shift every few years. Students who can
+    teach themselves&mdash;who can take unfamiliar material and
+    build working knowledge from it with AI assistance&mdash;are
+    the ones who stay current. That's the lifelong learning piece.
+    Not as a buzzword, but as a practical skill we can actually teach.
+  </p>
+
+  <div class="ref">
+    <a href="https://research.google/blog/learn-your-way-reimagining-textbooks-with-generative-ai/">Google: Reimagining Textbooks with AI</a> &middot;
+    <a href="https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2026/02/03/reflections-value-ai-assisted-textbook">Inside Higher Ed: AI-Assisted Textbooks</a>
+  </div>
+</section>
+
+<section id="pedagogy">
+  <h2>Pedagogy</h2>
+
+  <p>
+    This doesn't lower the bar. It raises the ceiling.
+  </p>
+
+  <h3>What stays the same</h3>
+  <ul>
+    <li>Manual coding is still assessed&mdash;students write code without AI</li>
+    <li>Theory and concepts tested independently</li>
+    <li>Instructor facilitation in all AI-assisted work</li>
+  </ul>
+
+  <h3>What changes</h3>
+  <ul>
+    <li>Prompting and specification writing become core skills</li>
+    <li>Code review gets real&mdash;evaluating AI output for correctness and security</li>
+    <li>Project scope increases to match real-world complexity</li>
+  </ul>
+
+  <p>
+    Assessment covers three things: does the student understand the
+    concept, can they do it manually, and can they use AI to build
+    at a higher level. All three, every time.
+  </p>
+
+  <div class="ref">
+    <a href="https://www.anthropic.com/research/AI-assistance-coding-skills">Anthropic: How AI Assistance Impacts Coding Skills</a> &middot;
+    <a href="https://www.science.org/doi/10.1126/science.adz9311">Science: Global Diffusion and Impact of Generative AI</a>
+  </div>
+</section>
+
+<section id="community">
+  <h2>Community &amp; Industry</h2>
+
+  <p>
+    Co-op work terms should have a local focus where possible.
+    Students using these tools on real projects in NL demonstrate
+    the technology directly to employers and stakeholders. That
+    builds connections and awareness.
+  </p>
+
+  <ul>
+    <li>Graduates who can work with AI tools are immediately more useful to local employers</li>
+    <li>Demonstrating the tech to local shareholders generates buy-in and knowledge building</li>
+    <li>Early adoption positions the SD program as industry-aligned</li>
+  </ul>
+</section>
+
+<section id="next">
+  <h2>Next Steps</h2>
+
+  <ol>
+    <li>Secure educational licensing (starting with Claude Code)</li>
+    <li>Pilot in one or two upper-year courses</li>
+    <li>Develop assessment rubrics for AI-assisted work</li>
+    <li>Gather feedback from students and co-op employers</li>
+    <li>Expand based on results</li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  <span>
+    Software Development (Co-op) &middot;
+    <a href="https://www.cna.nl.ca/">College of the North Atlantic</a>
+    &middot; 2026
+  </span>
+  <label class="theme-toggle" id="themeToggle">
+    <span>light</span>
+    <div class="toggle-track">
+      <div class="toggle-knob"></div>
+    </div>
+    <span>dark</span>
+  </label>
+</footer>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+
+  // check saved preference or system preference
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    html.setAttribute('data-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+
+  toggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
+
+</body>
+</html>
