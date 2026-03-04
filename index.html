@@ -183,13 +183,21 @@
       align-items: center;
     }
 
-    /* toggle */
+    /* toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+    }
+
     .theme-toggle {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      color: var(--fg-muted);
+      gap: 0.4rem;
       cursor: pointer;
       user-select: none;
     }
@@ -218,14 +226,52 @@
       transform: translateX(1rem);
     }
 
+    .size-control {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .size-control label {
+      color: var(--fg-muted);
+    }
+
+    .size-control input[type="range"] {
+      width: 5rem;
+      height: 0.3rem;
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+    }
+
+    .size-control .size-val {
+      min-width: 2.2rem;
+      text-align: right;
+    }
+
     @media (max-width: 600px) {
       html { font-size: 16px; }
       .tools-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 0.8rem; }
+      .toolbar { gap: 0.8rem; }
     }
   </style>
 </head>
 <body>
+
+<div class="toolbar">
+  <div class="size-control">
+    <label for="sizeRange">text</label>
+    <input type="range" id="sizeRange" min="14" max="24" value="18" step="1">
+    <span class="size-val" id="sizeVal">18px</span>
+  </div>
+  <label class="theme-toggle" id="themeToggle">
+    <span>light</span>
+    <div class="toggle-track">
+      <div class="toggle-knob"></div>
+    </div>
+    <span>dark</span>
+  </label>
+</div>
 
 <header>
   <h1>AI-Assisted Development in the SD Program</h1>
@@ -455,32 +501,41 @@
     <a href="https://www.cna.nl.ca/">College of the North Atlantic</a>
     &middot; 2026
   </span>
-  <label class="theme-toggle" id="themeToggle">
-    <span>light</span>
-    <div class="toggle-track">
-      <div class="toggle-knob"></div>
-    </div>
-    <span>dark</span>
-  </label>
 </footer>
 
 <script>
-  const toggle = document.getElementById('themeToggle');
   const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const sizeRange = document.getElementById('sizeRange');
+  const sizeVal = document.getElementById('sizeVal');
 
-  // check saved preference or system preference
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    html.setAttribute('data-theme', saved);
+  // theme
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     html.setAttribute('data-theme', 'dark');
   }
 
   toggle.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+  });
+
+  // text size
+  const savedSize = localStorage.getItem('fontSize');
+  if (savedSize) {
+    html.style.fontSize = savedSize + 'px';
+    sizeRange.value = savedSize;
+    sizeVal.textContent = savedSize + 'px';
+  }
+
+  sizeRange.addEventListener('input', () => {
+    const px = sizeRange.value;
+    html.style.fontSize = px + 'px';
+    sizeVal.textContent = px + 'px';
+    localStorage.setItem('fontSize', px);
   });
 </script>
 
