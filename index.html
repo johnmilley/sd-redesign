@@ -16,6 +16,8 @@
       --link: #0897e2;
       --toggle-bg: #ddd;
       --toggle-knob: #fff;
+      --drawer-bg: #fafaf5;
+      --comment-bg: #f0f0eb;
     }
 
     [data-theme="dark"] {
@@ -27,6 +29,8 @@
       --link: #5bb8f0;
       --toggle-bg: #555;
       --toggle-knob: #ddd;
+      --drawer-bg: #222;
+      --comment-bg: #2a2a2a;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,6 +51,49 @@
       padding: 2rem 1.5rem 4rem;
     }
 
+    /* toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-track {
+      width: 2.2rem;
+      height: 1.2rem;
+      background: var(--toggle-bg);
+      border-radius: 0.6rem;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .toggle-knob {
+      width: 0.9rem;
+      height: 0.9rem;
+      background: var(--toggle-knob);
+      border-radius: 50%;
+      position: absolute;
+      top: 0.15rem;
+      left: 0.15rem;
+      transition: transform 0.2s;
+    }
+
+    [data-theme="dark"] .toggle-knob {
+      transform: translateX(1rem);
+    }
+
+    /* header */
     header {
       margin-bottom: 2.5rem;
       padding-bottom: 1.2rem;
@@ -72,6 +119,7 @@
 
     nav a { margin-right: 1.2rem; }
 
+    /* content */
     h2 {
       font-size: 1.05rem;
       font-weight: 700;
@@ -79,6 +127,9 @@
       margin-bottom: 0.6rem;
       padding-bottom: 0.3rem;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
     }
 
     h3 {
@@ -172,98 +223,167 @@
 
     .ref a { font-size: 0.75rem; }
 
+    /* feedback button in section headers */
+    .feedback-btn {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--fg-muted);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--code-bg);
+      padding: 0.1rem 0.5rem;
+      border-radius: 3px;
+      font-family: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .feedback-btn:hover {
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+
+    /* comment drawer */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 100;
+    }
+
+    .drawer-overlay.open { display: block; }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(28rem, 90vw);
+      height: 100vh;
+      background: var(--drawer-bg);
+      border-left: 2px solid var(--border);
+      z-index: 101;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+      font-size: 0.85rem;
+    }
+
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      padding: 1.2rem 1.2rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-header h3 {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .drawer-close {
+      background: none;
+      border: none;
+      color: var(--fg-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0.2rem 0.4rem;
+    }
+
+    .drawer-close:hover { color: var(--fg); }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 1.2rem;
+    }
+
+    .drawer-footer {
+      padding: 0.8rem 1.2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .drawer-footer a {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue);
+      border-radius: 3px;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .drawer-footer a:hover {
+      background: var(--accent-blue);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .comment {
+      background: var(--comment-bg);
+      padding: 0.7rem 0.9rem;
+      margin-bottom: 0.7rem;
+      border-radius: 4px;
+    }
+
+    .comment-meta {
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .comment-meta img {
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+    }
+
+    .comment-body {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .drawer-empty {
+      color: var(--fg-muted);
+      font-style: italic;
+      font-size: 0.8rem;
+    }
+
+    .drawer-loading {
+      color: var(--fg-muted);
+      font-size: 0.8rem;
+    }
+
+    /* footer */
     footer {
       margin-top: 2.5rem;
       padding-top: 1.2rem;
       border-top: 2px solid var(--border);
       font-size: 0.75rem;
       color: var(--fg-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* toolbar */
-    .toolbar {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.75rem;
-      color: var(--fg-muted);
-    }
-
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .toggle-track {
-      width: 2.2rem;
-      height: 1.2rem;
-      background: var(--toggle-bg);
-      border-radius: 0.6rem;
-      position: relative;
-      transition: background 0.2s;
-    }
-
-    .toggle-knob {
-      width: 0.9rem;
-      height: 0.9rem;
-      background: var(--toggle-knob);
-      border-radius: 50%;
-      position: absolute;
-      top: 0.15rem;
-      left: 0.15rem;
-      transition: transform 0.2s;
-    }
-
-    [data-theme="dark"] .toggle-knob {
-      transform: translateX(1rem);
-    }
-
-    .size-control {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .size-control label {
-      color: var(--fg-muted);
-    }
-
-    .size-control input[type="range"] {
-      width: 5rem;
-      height: 0.3rem;
-      accent-color: var(--accent-blue);
-      cursor: pointer;
-    }
-
-    .size-control .size-val {
-      min-width: 2.2rem;
-      text-align: right;
     }
 
     @media (max-width: 600px) {
       html { font-size: 16px; }
       .tools-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 0.8rem; }
-      .toolbar { gap: 0.8rem; }
     }
   </style>
 </head>
 <body>
 
 <div class="toolbar">
-  <div class="size-control">
-    <label for="sizeRange">text</label>
-    <input type="range" id="sizeRange" min="14" max="24" value="18" step="1">
-    <span class="size-val" id="sizeVal">18px</span>
-  </div>
   <label class="theme-toggle" id="themeToggle">
     <span>light</span>
     <div class="toggle-track">
@@ -294,7 +414,10 @@
 <main>
 
 <section id="thesis">
-  <h2>Thesis</h2>
+  <h2>
+    <span>Thesis</span>
+    <button class="feedback-btn" data-issue="1">feedback</button>
+  </h2>
 
   <div class="callout">
     AI coding tools should be adopted into the SD program. First year
@@ -307,23 +430,31 @@
     This is already happening elsewhere. CMU launched a course where
     students build full applications without writing code manually.
     Anthropic partnered with CodePath to put Claude Code at the centre
-    of CS programs at 20,000+ student institutions, including HBCUs.
+    of CS programs reaching 20,000+ students, including HBCUs.
     Stanford is teaching "vibe coding" as continuing education.
   </p>
 
   <p>
-    These aren't experiments anymore. They're curriculum.
+    In Canada, the conversation is moving too. Policy Options argues the
+    country needs a national strategy for generative AI in higher education.
+    Right now there isn't one&mdash;it's a patchwork. The NL government
+    is already investing nearly $2M in AI micro-credential training for
+    local businesses. The demand is here. The program should match it.
   </p>
 
   <div class="ref">
-    <a href="https://s3d.cmu.edu/news/2025/1020-ai-tools-for-software.html">CMU: AI Tools for Software Development</a> &middot;
-    <a href="https://www.anthropic.com/news/anthropic-codepath-partnership">Anthropic &times; CodePath Partnership</a> &middot;
-    <a href="https://continuingstudies.stanford.edu/courses/professional-and-personal-development/vibe-coding-building-software-in-conversation-with-ai/20252_TECH-42">Stanford: Vibe Coding</a>
+    <a href="https://s3d.cmu.edu/news/2025/1020-ai-tools-for-software.html">CMU: AI Tools for Software Dev</a> &middot;
+    <a href="https://www.anthropic.com/news/anthropic-codepath-partnership">Anthropic &times; CodePath</a> &middot;
+    <a href="https://policyoptions.irpp.org/2025/09/ai-higher-ed/">Policy Options: AI in Higher Ed</a> &middot;
+    <a href="https://www.gov.nl.ca/releases/2025/ipgs/0507n03/">NL Gov: $2M AI Training</a>
   </div>
 </section>
 
 <section id="curriculum">
-  <h2>Curriculum Fit</h2>
+  <h2>
+    <span>Curriculum Fit</span>
+    <button class="feedback-btn" data-issue="2">feedback</button>
+  </h2>
 
   <p>
     Year 1 already teaches the skills that make these tools work.
@@ -353,7 +484,10 @@
 </section>
 
 <section id="tools">
-  <h2>Tools</h2>
+  <h2>
+    <span>Tools</span>
+    <button class="feedback-btn" data-issue="3">feedback</button>
+  </h2>
 
   <p>
     Several options exist. Claude Code is the recommendation
@@ -381,48 +515,41 @@
   </div>
 
   <p>
-    Students should be aware of alternatives. The field moves fast
-    and tool preferences change. What matters is the underlying
-    skill&mdash;working effectively with AI&mdash;not any single product.
+    Students should know the alternatives. The field moves fast
+    and tools change. What matters is the skill&mdash;working
+    effectively with AI&mdash;not any single product.
   </p>
 
   <div class="ref">
-    <a href="https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/">JetBrains: State of Developer Ecosystem 2025</a> &middot;
-    <a href="https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/">GitHub: Copilot Productivity Research</a>
+    <a href="https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/">JetBrains: Developer Ecosystem 2025</a> &middot;
+    <a href="https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/">GitHub: Copilot Research</a>
   </div>
 </section>
 
 <section id="textbooks">
-  <h2>Student-Built Textbooks</h2>
+  <h2>
+    <span>Student-Built Textbooks</span>
+    <button class="feedback-btn" data-issue="4">feedback</button>
+  </h2>
 
   <p>
-    One concrete use case: students build their own course
-    materials using AI tools. This isn't hypothetical. Google's
-    LearnLM team is already researching AI-personalized textbooks.
-    UCLA is piloting AI-generated course texts.
-  </p>
-
-  <p>
-    For our program, the approach is more hands-on. Students use
-    Claude Code (or similar) to generate, edit, and maintain
-    reference materials for their own courses. They learn the
-    tool by building something they actually need.
+    Students use AI tools to build their own course materials.
+    They learn the tool by building something they actually need.
   </p>
 
   <div class="callout blue">
-    This does two things at once: it teaches the technology, and
-    it builds the habit of creating your own learning resources.
-    In this field, the documentation you need doesn't always
-    exist. The ability to build it yourself is a career-long skill.
+    This does two things: teaches the technology and builds the
+    habit of creating your own learning resources. In this field,
+    the docs you need don't always exist. Building them yourself
+    is a career-long skill.
   </div>
 
   <p>
-    Software development changes constantly. Frameworks, languages,
-    and best practices shift every few years. Students who can
+    Software development changes constantly. Students who can
     teach themselves&mdash;who can take unfamiliar material and
     build working knowledge from it with AI assistance&mdash;are
     the ones who stay current. That's the lifelong learning piece.
-    Not as a buzzword, but as a practical skill we can actually teach.
+    Not a buzzword. A practical skill we can actually teach.
   </p>
 
   <div class="ref">
@@ -432,7 +559,10 @@
 </section>
 
 <section id="pedagogy">
-  <h2>Pedagogy</h2>
+  <h2>
+    <span>Pedagogy</span>
+    <button class="feedback-btn" data-issue="5">feedback</button>
+  </h2>
 
   <p>
     This doesn't lower the bar. It raises the ceiling.
@@ -459,30 +589,43 @@
   </p>
 
   <div class="ref">
-    <a href="https://www.anthropic.com/research/AI-assistance-coding-skills">Anthropic: How AI Assistance Impacts Coding Skills</a> &middot;
-    <a href="https://www.science.org/doi/10.1126/science.adz9311">Science: Global Diffusion and Impact of Generative AI</a>
+    <a href="https://www.anthropic.com/research/AI-assistance-coding-skills">Anthropic: AI &amp; Coding Skills</a> &middot;
+    <a href="https://www.science.org/doi/10.1126/science.adz9311">Science: Global AI Diffusion</a> &middot;
+    <a href="https://policyoptions.irpp.org/2026/01/students-ai/">Policy Options: AI Patchwork Failing Students</a>
   </div>
 </section>
 
 <section id="community">
-  <h2>Community &amp; Industry</h2>
+  <h2>
+    <span>Community &amp; Industry</span>
+    <button class="feedback-btn" data-issue="6">feedback</button>
+  </h2>
 
   <p>
     Co-op work terms should have a local focus where possible.
     Students using these tools on real projects in NL demonstrate
-    the technology directly to employers and stakeholders. That
-    builds connections and awareness.
+    the technology directly to employers and stakeholders.
   </p>
 
   <ul>
     <li>Graduates who can work with AI tools are immediately more useful to local employers</li>
     <li>Demonstrating the tech to local shareholders generates buy-in and knowledge building</li>
+    <li>ACOA's Regional AI Initiative is already funding Atlantic Canadian businesses adopting AI&mdash;our graduates should be ready to work in that environment</li>
     <li>Early adoption positions the SD program as industry-aligned</li>
   </ul>
+
+  <div class="ref">
+    <a href="https://www.canada.ca/en/atlantic-canada-opportunities/services/regional-artificial-intelligence-initiative.html">ACOA: Regional AI Initiative</a> &middot;
+    <a href="https://www.ctvnews.ca/sci-tech/article/it-changes-everything-how-ai-is-impacting-post-secondary-education/">CTV: AI in Post-Secondary</a> &middot;
+    <a href="https://digitalnovascotia.com/news/unlocking-atlantic-canadas-potential-with-artificial-intelligence-a-snapshot-from-the-atlantic-economic-council/">Digital NS: AI in Atlantic Canada</a>
+  </div>
 </section>
 
 <section id="next">
-  <h2>Next Steps</h2>
+  <h2>
+    <span>Next Steps</span>
+    <button class="feedback-btn" data-issue="7">feedback</button>
+  </h2>
 
   <ol>
     <li>Secure educational licensing (starting with Claude Code)</li>
@@ -503,13 +646,25 @@
   </span>
 </footer>
 
+<!-- comment drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <h3 id="drawerTitle">Feedback</h3>
+    <button class="drawer-close" id="drawerClose">&times;</button>
+  </div>
+  <div class="drawer-body" id="drawerBody">
+  </div>
+  <div class="drawer-footer">
+    <a id="drawerLink" href="#" target="_blank">add your feedback on GitHub</a>
+  </div>
+</div>
+
 <script>
+  // theme toggle
   const html = document.documentElement;
   const toggle = document.getElementById('themeToggle');
-  const sizeRange = document.getElementById('sizeRange');
-  const sizeVal = document.getElementById('sizeVal');
 
-  // theme
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme) {
     html.setAttribute('data-theme', savedTheme);
@@ -523,19 +678,82 @@
     localStorage.setItem('theme', next);
   });
 
-  // text size
-  const savedSize = localStorage.getItem('fontSize');
-  if (savedSize) {
-    html.style.fontSize = savedSize + 'px';
-    sizeRange.value = savedSize;
-    sizeVal.textContent = savedSize + 'px';
+  // comment drawer
+  const REPO = 'johnmilley/sd-redesign';
+  const overlay = document.getElementById('drawerOverlay');
+  const drawer = document.getElementById('drawer');
+  const drawerTitle = document.getElementById('drawerTitle');
+  const drawerBody = document.getElementById('drawerBody');
+  const drawerLink = document.getElementById('drawerLink');
+  const drawerClose = document.getElementById('drawerClose');
+
+  function openDrawer(issueNum, sectionTitle) {
+    drawerTitle.textContent = sectionTitle;
+    drawerBody.innerHTML = '<div class="drawer-loading">loading comments...</div>';
+    drawerLink.href = `https://github.com/${REPO}/issues/${issueNum}`;
+    overlay.classList.add('open');
+    drawer.classList.add('open');
+    fetchComments(issueNum);
   }
 
-  sizeRange.addEventListener('input', () => {
-    const px = sizeRange.value;
-    html.style.fontSize = px + 'px';
-    sizeVal.textContent = px + 'px';
-    localStorage.setItem('fontSize', px);
+  function closeDrawer() {
+    overlay.classList.remove('open');
+    drawer.classList.remove('open');
+  }
+
+  overlay.addEventListener('click', closeDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
+  async function fetchComments(issueNum) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO}/issues/${issueNum}/comments`,
+        { headers: { 'Accept': 'application/vnd.github.v3+json' } }
+      );
+      if (!res.ok) throw new Error(res.status);
+      const comments = await res.json();
+
+      if (comments.length === 0) {
+        drawerBody.innerHTML =
+          '<div class="drawer-empty">No feedback yet. Be the first.</div>';
+        return;
+      }
+
+      drawerBody.innerHTML = comments.map(c => {
+        const date = new Date(c.created_at).toLocaleDateString('en-CA', {
+          year: 'numeric', month: 'short', day: 'numeric'
+        });
+        const body = c.body
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        return `
+          <div class="comment">
+            <div class="comment-meta">
+              <img src="${c.user.avatar_url}" alt="">
+              <strong>${c.user.login}</strong>
+              <span>${date}</span>
+            </div>
+            <div class="comment-body">${body}</div>
+          </div>`;
+      }).join('');
+    } catch (err) {
+      drawerBody.innerHTML =
+        `<div class="drawer-empty">Couldn't load comments. <a href="https://github.com/${REPO}/issues/${issueNum}" target="_blank">View on GitHub</a></div>`;
+    }
+  }
+
+  // wire up feedback buttons
+  document.querySelectorAll('.feedback-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const issue = btn.dataset.issue;
+      const section = btn.closest('section');
+      const title = section.querySelector('h2 span').textContent;
+      openDrawer(issue, title);
+    });
   });
 </script>
 
