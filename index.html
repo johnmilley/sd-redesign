@@ -193,6 +193,54 @@
       background: var(--code-bg);
     }
 
+    code {
+      font-family: "SF Mono", "Consolas", "Liberation Mono", monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      text-align: center;
+      min-width: 8rem;
+      background: var(--code-bg);
+    }
+
+    .flow-label {
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .flow-desc {
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+    }
+
+    .flow-arrow {
+      font-size: 1.2rem;
+      color: var(--fg-muted);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      margin: 1.2rem 0;
+      border-radius: 4px;
+      display: block;
+    }
+
     .tools-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -535,26 +583,109 @@
   </h2>
 
   <p>
-    Students use AI tools to build their own course materials.
-    They learn the tool by building something they actually need.
+    Instead of buying a textbook, students build one. They take
+    notes throughout the semester in simple text files, and a
+    tool turns those files into a personal reference website they
+    can search, share, and keep after graduation.
   </p>
 
-  <div class="callout blue">
-    This does two things: teaches the technology and builds the
-    habit of creating your own learning resources. In this field,
-    the docs you need don't always exist. Building them yourself
-    is a career-long skill.
+  <!-- PHOTO: student taking notes or working at a laptop -->
+  <!-- suggested: https://unsplash.com/s/photos/student-computer -->
+
+  <h3>The tool: MkDocs</h3>
+
+  <p>
+    <a href="https://www.mkdocs.org/">MkDocs</a> is a free,
+    open-source Python program. Students are already learning
+    Python and web development in semester 1&mdash;MkDocs sits
+    right in the middle of both.
+  </p>
+
+  <p>
+    It works like this: students write notes in
+    <strong>markdown</strong>, a simple formatting language used
+    across the tech industry (GitHub, documentation sites, wikis,
+    issue trackers). MkDocs reads those files and generates a
+    clean, searchable website. No design work needed.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-label">Write</div>
+      <div class="flow-desc">Plain text notes in markdown</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="flow-label">Build</div>
+      <div class="flow-desc">MkDocs generates a website</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="flow-label">Publish</div>
+      <div class="flow-desc">Deploy to GitHub Pages</div>
+    </div>
   </div>
 
   <p>
-    Software development changes constantly. Students who can
-    teach themselves&mdash;who can take unfamiliar material and
-    build working knowledge from it with AI assistance&mdash;are
-    the ones who stay current. That's the lifelong learning piece.
-    Not a buzzword. A practical skill we can actually teach.
+    Setup takes one command: <code>pip install mkdocs</code>.
+    The config is a single file. Students run
+    <code>mkdocs serve</code> in the terminal and see their
+    site locally. When they're ready to share, one more command
+    puts it online.
   </p>
 
+  <h3>What students learn along the way</h3>
+
+  <p>
+    The textbook project isn't just about notes. It quietly
+    teaches a stack of professional skills:
+  </p>
+
+  <ul>
+    <li><strong>Markdown</strong> &mdash; the standard format for developer documentation everywhere</li>
+    <li><strong>Command line</strong> &mdash; they install, configure, and run MkDocs from the terminal</li>
+    <li><strong>Python tooling</strong> &mdash; pip, virtual environments, running Python packages</li>
+    <li><strong>Git</strong> &mdash; the textbook is a repository. Every edit is version-controlled from day one</li>
+    <li><strong>Web publishing</strong> &mdash; deploying a real site to GitHub Pages</li>
+    <li><strong>Writing</strong> &mdash; explaining technical concepts in their own words is one of the best ways to learn them</li>
+  </ul>
+
+  <!-- PHOTO: terminal/code on screen or a clean documentation site -->
+  <!-- suggested: https://unsplash.com/s/photos/command-line -->
+
+  <h3>How AI fits in</h3>
+
+  <div class="callout blue">
+    In year 1, students build the textbook manually. They learn
+    markdown, the command line, and the workflow. In years 2 and
+    3, AI tools help them expand it&mdash;generating draft
+    sections, reorganizing content, adding examples. They already
+    understand the system, so AI becomes an accelerator, not a
+    crutch.
+  </div>
+
+  <h3>The lifelong learning piece</h3>
+
+  <p>
+    Software development changes constantly. Languages, frameworks,
+    and best practices shift every few years. The developers who
+    stay current are the ones who can teach themselves&mdash;who
+    can take unfamiliar material and build working knowledge from
+    it.
+  </p>
+
+  <p>
+    That's exactly what this project trains. Students leave the
+    program with a personal reference site, the tools to maintain
+    it, and the habit of writing things down to learn them. That
+    habit carries forward for an entire career.
+  </p>
+
+  <!-- PHOTO: person studying/learning independently, or open books + laptop -->
+  <!-- suggested: https://unsplash.com/s/photos/study-notes -->
+
   <div class="ref">
+    <a href="https://www.mkdocs.org/">MkDocs</a> &middot;
     <a href="https://research.google/blog/learn-your-way-reimagining-textbooks-with-generative-ai/">Google: Reimagining Textbooks with AI</a> &middot;
     <a href="https://www.insidehighered.com/news/tech-innovation/artificial-intelligence/2026/02/03/reflections-value-ai-assisted-textbook">Inside Higher Ed: AI-Assisted Textbooks</a>
   </div>
